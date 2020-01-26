@@ -27,9 +27,10 @@ def getTrackBarVals(name):
     return np.array((lH, lS, lV)), np.array((uH, uS, uV))
 
 
+name = "frame"
 cap = cv2.VideoCapture(1)
 width, height = int(cap.get(3)), int(cap.get(4))
-creatTrackBar("color-range TrackBar", "web")
+creatTrackBar(name, "web")
 codex = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
 writer = cv2.VideoWriter("detectedColor.avi", codex, 20, (width, height))
 
@@ -37,7 +38,7 @@ while True:
     global recording
     _, frame = cap.read()
     hsvFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    lowObjColor, highObjColor = getTrackBarVals("color-range TrackBar")
+    lowObjColor, highObjColor = getTrackBarVals(name)
     colorRange = cv2.inRange(hsvFrame, lowObjColor, highObjColor)
     gauBlr = cv2.GaussianBlur(colorRange, (9, 9), 1)
     medBlr = cv2.medianBlur(colorRange, 15)

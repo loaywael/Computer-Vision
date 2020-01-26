@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 bgr = cv2.imread("../../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)  # bluish img
 bkg = np.zeros_like(bgr)
 
+counts = 0
+vertices = []
+elpisPoints = []
 drawing = False
 x, y = 0, 0
 
@@ -62,9 +65,6 @@ def drawCircles(event, xi, yi, flags, params):
         drawing = False
         radius = int(np.sqrt((xi - x)**2 + (yi - y)**2))
         cv2.circle(bgr, (x, y), radius, (0, 0, 255), 5)
-
-
-vertices = []
 
 
 def drawPolygon(event, x, y, flags, params):
