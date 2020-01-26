@@ -3,9 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-carImg = cv2.imread("../../../gallery/car_plate.jpg", cv2.IMREAD_COLOR)
+carImg = cv2.imread("../../gallery/car_plate.jpg", cv2.IMREAD_COLOR)
 grayCarImg = cv2.cvtColor(carImg, cv2.COLOR_BGR2GRAY)
-haarPlatedPath = "../../../gallery/haarcascade_russian_plate_number.xml"
+haarPlatedPath = "../../gallery/haarcascade_russian_plate_number.xml"
 
 plateClass = cv2.CascadeClassifier(haarPlatedPath)
 plates = plateClass.detectMultiScale(grayCarImg, 1.2, 5)
@@ -13,11 +13,14 @@ plates = plateClass.detectMultiScale(grayCarImg, 1.2, 5)
 for (x, y, w, h) in plates:
     cv2.rectangle(carImg, (x, y), (x+w, y+h), (255, 0, 0), 3)
     plateRIO = carImg[y:y+h, x:x+w]
+    maxPlate = cv2.resize(plateRIO, None, fx=3, fy=3)
+    plateHeight, platWidth, platChann = maxPlate.shape
+    carImg[10:plateHeight+10, 10:platWidth+10] = maxPlate
     plateRIO = cv2.cvtColor(plateRIO, cv2.COLOR_BGR2GRAY)
     carImg[y:y+h, x:x+w] = cv2.medianBlur(carImg[y:y+h, x:x+w], 11)
     mask = cv2.adaptiveThreshold(
         plateRIO, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 7, 1)
-
+    cv2.line(carImg, (x, y), (platWidth+10, plateHeight+10), 255, 3)
 
 cv2.imshow("car-plates", carImg)
 cv2.imshow("plates", mask)

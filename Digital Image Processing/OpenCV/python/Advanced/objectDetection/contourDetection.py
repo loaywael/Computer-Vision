@@ -2,8 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-absPath = "/home/ezio/Rebos/AI-Machine-Learning-Curriculum/Computer Vision/OpenCV/python/Image Processing Tutorials/"
-pennyImg = cv2.imread(absPath+"gallery/penny.jpg", cv2.IMREAD_COLOR)
+pennyImg = cv2.imread("../../gallery/penny.jpg", cv2.IMREAD_COLOR)
 pennyImg = cv2.resize(pennyImg, None, fx=0.5, fy=0.5)
 grayPenny = cv2.cvtColor(pennyImg, cv2.COLOR_BGR2GRAY)
 grayPenny = cv2.medianBlur(grayPenny, 9)

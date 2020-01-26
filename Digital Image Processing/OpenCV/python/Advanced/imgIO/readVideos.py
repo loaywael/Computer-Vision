@@ -5,7 +5,7 @@ import time
 
 
 mins, seconds = 0, 0
-vidCap = cv2.VideoCapture("../../../gallery/lanePath.avi")
+vidCap = cv2.VideoCapture("../../gallery/lanePath.avi")
 font = cv2.FONT_HERSHEY_SIMPLEX
 width, height, fps = int(vidCap.get(3)), int(vidCap.get(3)), int(vidCap.get(cv2.CAP_PROP_FPS))
 codex = cv2.VideoWriter_fourcc(*"XVID")

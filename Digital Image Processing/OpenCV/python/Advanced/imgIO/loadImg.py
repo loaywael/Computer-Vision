@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-bgr = cv2.imread("../../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)  # bluish img
+bgr = cv2.imread("../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)  # bluish img
 rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
 
 b, g, r = cv2.split(bgr)

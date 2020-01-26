@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-hourseImg = cv2.imread("../../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)  # bluish img
+hourseImg = cv2.imread("../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)  # bluish img
 hsvHourseImg = cv2.cvtColor(hourseImg, cv2.COLOR_BGR2HSV)
 hslHourseImg = cv2.cvtColor(hourseImg, cv2.COLOR_BGR2HLS)
 

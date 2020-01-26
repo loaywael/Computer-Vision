@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-hourseImg = cv2.imread("../../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
+hourseImg = cv2.imread("../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
 
 for i, chn in enumerate(["r", "g", "b"]):
     hist = cv2.calcHist([hourseImg], channels=[i], mask=None, histSize=[255], ranges=[0, 256])

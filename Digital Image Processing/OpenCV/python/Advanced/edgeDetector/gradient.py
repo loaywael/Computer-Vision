@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-hourseImg = cv2.imread("../../../gallery/logo.png", cv2.IMREAD_GRAYSCALE)
+hourseImg = cv2.imread("../../gallery/logo.png", cv2.IMREAD_GRAYSCALE)
 
 # xGrad = cv2.Sobel(hourseImg, cv2.CV_64F, 1, 0, ksize=3)
 # yGrad = cv2.Sobel(hourseImg, cv2.CV_64F, 0, 1, ksize=3)

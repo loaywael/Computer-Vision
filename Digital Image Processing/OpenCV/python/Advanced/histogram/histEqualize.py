@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-hourseImg = cv2.imread("../../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
+hourseImg = cv2.imread("../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
 
 
 def plotImgHisto(img):
@@ -29,7 +29,6 @@ contrastedHourse = equalizeColoredImg(hourseImg)
 plotImgHisto(contrastedHourse)
 
 cv2.imshow("original", hourseImg)
-cv2.waitKey(0)
-cv2.imshow("original", contrastedHourse)
+cv2.imshow("contrasted", contrastedHourse)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

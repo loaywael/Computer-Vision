@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-chessImg = cv2.imread("../../../gallery/chessBoard.jpg", cv2.IMREAD_COLOR)
+chessImg = cv2.imread("../../gallery/chessBoard.jpg", cv2.IMREAD_COLOR)
 # grayChess = cv2.cvtColor(chessImg, cv2.COLOR_BGR2GRAY)
 
 found, corners = cv2.findChessboardCornersSB(chessImg, (8, 8))

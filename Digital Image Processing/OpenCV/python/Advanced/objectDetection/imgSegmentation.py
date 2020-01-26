@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-pennyImg = cv2.imread("../../../gallery/penny.jpg", cv2.IMREAD_COLOR)
+pennyImg = cv2.imread("../../gallery/penny.jpg", cv2.IMREAD_COLOR)
 pennyImg = cv2.resize(pennyImg, None, fx=0.2, fy=0.2)
 grayPenny = cv2.cvtColor(pennyImg, cv2.COLOR_BGR2GRAY)
 

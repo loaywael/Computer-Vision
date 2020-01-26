@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-srcImg = cv2.imread("../../../gallery/hourse.jpeg", cv2.IMREAD_GRAYSCALE)
+srcImg = cv2.imread("../../gallery/hourse.jpeg", cv2.IMREAD_GRAYSCALE)
 detParams = cv2.SimpleBlobDetector_Params()
 detParams.minThreshold = 0
 detParams.maxThreshold = 255

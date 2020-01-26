@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-hourseImg = cv2.imread("../../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
+hourseImg = cv2.imread("../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
 # hourseImg = cv2.cvtColor(hourseImg, cv2.COLOR_RGB2BGR)
 # grayHourse = cv2.cvtColor(hourseImg, cv2.COLOR_BGR2GRAY)
 

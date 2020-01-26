@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 
 
 cam = cv2.VideoCapture(1)
-haarPlatedPath = "../../../gallery/haarcascade_frontalface_default.xml"
+haarPlatedPath = "../../gallery/haarcascade_frontalface_default.xml"
 fourcc = cv2.VideoWriter_fourcc(*"XVID")
-vidWriter = cv2.VideoWriter("../../../gallery/bluredFace.avi", fourcc, 20.0, (640, 480))
+vidWriter = cv2.VideoWriter("bluredFace.avi", fourcc, 20.0, (640, 480))
 plateClass = cv2.CascadeClassifier(haarPlatedPath)
 
 while cam.isOpened():

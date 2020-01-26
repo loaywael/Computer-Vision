@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-bgr = cv2.imread("../../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)  # bluish img
+bgr = cv2.imread("../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)  # bluish img
 bkg = np.zeros_like(bgr)
 
 counts = 0

@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib import cm
 
 
-srcImg = cv2.imread("../../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
+srcImg = cv2.imread("../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
 srcImg = cv2.resize(srcImg, None, fx=0.5, fy=0.5)
 scene = srcImg.copy()
 segments = np.zeros_like(scene, np.uint8)

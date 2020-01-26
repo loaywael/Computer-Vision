@@ -1,6 +1,6 @@
 import cv2
 
-cam = cv2.VideoCapture(0)
+cam = cv2.VideoCapture(1)
 mog = cv2.createBackgroundSubtractorMOG2()
 while True:
     ret, frame = cam.read()

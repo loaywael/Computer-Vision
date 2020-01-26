@@ -20,7 +20,7 @@ while cap.isOpened():
     ret, frame = cap.read()
     b, g, r = frame[:, :, 1], frame[:, :, 0], frame[:, :, 0]
     borderEffect = cv2.copyMakeBorder(frame, 10, 10, 10, 10, cv2.BORDER_CONSTANT, value=255)
-    # different img size make demux problems
+    # different img size make demux problems, or bgr in compatible
     borderEffect = cv2.resize(borderEffect, (width, height))
     print(frame.shape, borderEffect.shape)
     # b, g, r = cv2.split(frame)

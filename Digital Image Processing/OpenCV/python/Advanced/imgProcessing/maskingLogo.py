@@ -8,8 +8,8 @@ import numpy as np
 # then overwrite logo mask on the region of interest of the target image
 
 
-hourseImg = cv2.imread("../../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
-logoImg = cv2.imread("../../../gallery/logo.png", cv2.IMREAD_COLOR)
+hourseImg = cv2.imread("../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
+logoImg = cv2.imread("../../gallery/logo.png", cv2.IMREAD_COLOR)
 
 rows, cols = logoImg.shape[:2]                      # size of the logo-img
 hourseROI = hourseImg[0:rows, 0:cols]               # target location to overwrite

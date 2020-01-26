@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-objImg = cv2.imread("../../../gallery/object.jpg", cv2.IMREAD_GRAYSCALE)
-sceneImg = cv2.imread("../../../gallery/scene.jpg", cv2.IMREAD_GRAYSCALE)
+objImg = cv2.imread("../../gallery/object.jpg", cv2.IMREAD_GRAYSCALE)
+sceneImg = cv2.imread("../../gallery/scene.jpg", cv2.IMREAD_GRAYSCALE)
 
 bfr = cv2.ORB_create()
 kp1, dst1 = bfr.detectAndCompute(objImg, None)

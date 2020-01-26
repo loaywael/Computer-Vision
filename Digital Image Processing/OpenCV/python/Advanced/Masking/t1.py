@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 
 
-hourseImg = cv2.imread("../../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
-logoImg = cv2.imread("../../../gallery/logo.png", cv2.IMREAD_COLOR)
+hourseImg = cv2.imread("../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
+logoImg = cv2.imread("../../gallery/logo.png", cv2.IMREAD_COLOR)
 
 
 # select the starting offset
