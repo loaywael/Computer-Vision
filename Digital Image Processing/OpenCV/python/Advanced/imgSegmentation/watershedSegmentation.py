@@ -6,7 +6,9 @@ from matplotlib import cm
 srcImg = cv2.imread("../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
 srcImg = cv2.resize(srcImg, None, fx=0.75, fy=0.75)
 scene = srcImg.copy()
-segments = np.zeros_like(scene, np.uint8)
+# output segments of the algorithm
+segments = np.zeros(scene.shape[:2], np.uint8)
+# markers used to guide the algorithm where each marker color got unique int value
 markedImg = np.zeros(scene.shape[:2], np.int32)
 
 
@@ -17,15 +19,6 @@ def getColorPallet(palletSize=1, palletName="tab10"):
             color = tuple((np.array(cm.tab10(i))[:3]*255))
             pallet.append(color)
     return pallet
-
-
-# def creatRoots(event, x, y, flags, params):
-#     global changedMark, drawing
-#     if event == cv2.EVENT_LBUTTONDBLCLK:
-#         pt = x, y
-#         cv2.circle(markedImg, pt, 9, (colorMark), -1)
-#         cv2.circle(scene, pt, 9, colorPallet[colorMark], -1)
-#         changedMark = True
 
 
 def creatRoots(event, x, y, flags, params):
@@ -45,8 +38,8 @@ def creatRoots(event, x, y, flags, params):
 drawing = False
 changedMark = False
 colorPallet = getColorPallet(10)
-cv2.namedWindow("img", cv2.WINDOW_AUTOSIZE)
-cv2.setMouseCallback("img", creatRoots)
+cv2.namedWindow("src-img", cv2.WINDOW_AUTOSIZE)
+cv2.setMouseCallback("src-img", creatRoots)
 
 colorMark = 0
 while True:
@@ -55,7 +48,7 @@ while True:
         break
     elif chr(key).isdigit():
         colorMark = eval(chr(key))
-        print(chr(key), colorMark)
+        print(colorMark)
 
     if changedMark:
         copied_markedImg = markedImg.copy()
@@ -64,7 +57,7 @@ while True:
         for clrIndex in range(len(colorPallet)):
             segments[copied_markedImg == (clrIndex)] = colorPallet[clrIndex]
 
-    cv2.imshow("img", scene)
+    cv2.imshow("src-img", scene)
     cv2.imshow("segments", segments)
 
 cv2.destroyAllWindows()
