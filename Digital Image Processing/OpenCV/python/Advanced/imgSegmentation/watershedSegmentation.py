@@ -4,7 +4,7 @@ from matplotlib import cm
 
 
 srcImg = cv2.imread("../../gallery/hourse.jpeg", cv2.IMREAD_COLOR)
-srcImg = cv2.resize(srcImg, None, fx=0.5, fy=0.5)
+srcImg = cv2.resize(srcImg, None, fx=0.75, fy=0.75)
 scene = srcImg.copy()
 segments = np.zeros_like(scene, np.uint8)
 markedImg = np.zeros(scene.shape[:2], np.int32)
@@ -19,15 +19,30 @@ def getColorPallet(palletSize=1, palletName="tab10"):
     return pallet
 
 
+# def creatRoots(event, x, y, flags, params):
+#     global changedMark, drawing
+#     if event == cv2.EVENT_LBUTTONDBLCLK:
+#         pt = x, y
+#         cv2.circle(markedImg, pt, 9, (colorMark), -1)
+#         cv2.circle(scene, pt, 9, colorPallet[colorMark], -1)
+#         changedMark = True
+
+
 def creatRoots(event, x, y, flags, params):
-    global changedMark
-    if event == cv2.EVENT_LBUTTONDBLCLK:
-        pt = x, y
-        cv2.circle(markedImg, pt, 9, (colorMark), -1)
-        cv2.circle(scene, pt, 9, colorPallet[colorMark], -1)
+    global changedMark, drawing
+    if event == cv2.EVENT_LBUTTONDOWN:
+        drawing = True
+    elif event == cv2.EVENT_MOUSEMOVE and drawing:
+        cv2.circle(markedImg, (x, y), 3, (colorMark), -1)
+        cv2.circle(scene, (x, y), 3, colorPallet[colorMark], -1)
+    elif event == cv2.EVENT_LBUTTONUP:
+        cv2.circle(markedImg, (x, y), 3, (colorMark), -1)
+        cv2.circle(scene, (x, y), 3, colorPallet[colorMark], -1)
+        drawing = False
         changedMark = True
 
 
+drawing = False
 changedMark = False
 colorPallet = getColorPallet(10)
 cv2.namedWindow("img", cv2.WINDOW_AUTOSIZE)
