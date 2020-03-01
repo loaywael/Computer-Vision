@@ -36,6 +36,7 @@ pennyImg[markers == -1] = [255, 0, 0]
 fullOps = np.hstack([mask, closing, erosion, distTrans])
 cv2.imshow("operations", fullOps)
 cv2.imshow("img", pennyImg)
+cv2.imshow("img0", erosion)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
