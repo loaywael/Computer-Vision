@@ -172,6 +172,19 @@ def getLaneMask(bgrFrame, minLineThresh, maxLineThresh,
 
 
 def getinitialCenters(warpedFrame):
+    """
+    Estimates the begining of the lane lines and locate its center points
+    by computing peaks in histogram and finding the y-axis from the first 
+    white pixel and the x-axis from the bottom half and taking its median point
+    
+    Returns
+    =======
+    initialLeftXCenter: (int) X-axis position of the left lane line
+    initialRightXCenter: (int) X-axis position of the right lane line
+    xPixsHisto: (np.ndarray) histogram of pixels of the given image along X-axis
+    
+    @param warpedFrame: bird view binary image of the lane roi
+    """
     xPixsHisto = np.sum(warpedFrame[warpedFrame.shape[0]//2:], axis=0)
     midPoint = xPixsHisto.shape[0]//2
     leftXcPoint = np.argmax(xPixsHisto[:midPoint])
@@ -180,18 +193,41 @@ def getinitialCenters(warpedFrame):
 
 
 def fitLaneLines(leftLinePoints, rightLinePoints, lineLength, order=2):
+    """
+    Fits lines to a given lane lines
+    
+    @param leftLinePoints: (tuple) lane lines points X, Y (np.ndarray)
+    @param rightLinePoints: (tuple) lane lines points X, Y (np.ndarray)
+    @param lineLength: Height of lane line
+    @param order: degree of polynomial equation that fits the lane lines
+    """
     leftX, leftY = leftLinePoints
     rightX, rightY = rightLinePoints
     leftLineParams = np.polyfit(leftY, leftX, order)
     rightLineParams = np.polyfit(rightY, rightX, order)
     save2File("linesFit", dict(leftParams=leftLineParams, rightParams=rightLineParams))
-    lineYVals = np.linspace(0, lineLength, birdFrame.shape[0])
+    lineYVals = np.linspace(0, lineLength, lineLength)
     leftLineXVals = leftLineParams[0]*lineYVals**2 + lineYVals*leftLineParams[1] + leftLineParams[2]
     rightLineXVals = rightLineParams[0]*lineYVals**2 + lineYVals*rightLineParams[1] + rightLineParams[2]
     return (leftLineXVals, lineYVals), (rightLineXVals, lineYVals)
     
 
 def getLanePoints(warpedFrame, nWindows, windowWidth, pixelsThresh):
+    """
+    Applies blind search for the lane points (white pixels on black background)
+    using the sliding window algorithm starting from the centers of the histogram peaks
+    
+    Returns 
+    =======
+    outImg: (np.3darray) result of search plotted over
+    leftLinePoints: (tuple) lane lines points X, Y (np.ndarray)
+    rightLinePoints: (tuple) lane lines points X, Y (np.ndarray)
+    
+    @param warpedFrame: (np.ndarray) bird view binary image of the lane roi
+    @param nWindows: (int) number of windows allowed to be stacked on top of each other
+    @param windowWidth: (int) window width (horizontal distance between diagonals)
+    @param pixelsThresh: (int) minimum points to be considered as part of the lane
+    """
     leftLanePixelsIds = []
     rightLanePixelsIds = []
     noneZeroIds = warpedFrame.nonzero()
@@ -235,16 +271,29 @@ def getLanePoints(warpedFrame, nWindows, windowWidth, pixelsThresh):
 
     leftLanePixelsIds = np.sum(np.array(leftLanePixelsIds), axis=0).astype("bool")
     rightLanePixelsIds = np.sum(np.array(rightLanePixelsIds), axis=0).astype("bool")
-    leftX = noneZeroXIds[leftLanePixelsIds]
-    leftY = noneZeroYIds[leftLanePixelsIds]
-    rightX = noneZeroXIds[rightLanePixelsIds]
-    rightY = noneZeroYIds[rightLanePixelsIds]
-    outImg[leftY, leftX] = [255, 0, 0]
-    outImg[rightY, rightX] = [0, 0, 255]
-    return outImg, (leftX, leftY), (rightX, rightY)
+    leftXPoints = noneZeroXIds[leftLanePixelsIds]
+    leftYPoints = noneZeroYIds[leftLanePixelsIds]
+    rightXPoints = noneZeroXIds[rightLanePixelsIds]
+    rightYPoints = noneZeroYIds[rightLanePixelsIds]
+    outImg[leftYPoints, leftXPoints] = [255, 0, 0]
+    outImg[rightYPoints, rightXPoints] = [0, 0, 255]
+    return outImg, (leftXPoints, leftYPoints), (rightXPoints, rightYPoints)
 
 
 def predictLaneLines(warpedFrame, linesParams, margin):
+    """
+    Predicts lane line in a new frame based on previous detection from blind search
+    
+    Returns
+    =======
+    outImg: (np.3darray) result of search plotted over
+    leftLinePoints: (tuple) lane lines points X, Y (np.ndarray)
+    rightLinePoints: (tuple) lane lines points X, Y (np.ndarray)
+    
+    @param warpedFrame: (np.ndarray) bird view binary image of the lane roi
+    @param linesParams: (dict) previous fitted params
+    @param margin: (int) lane line detection boundry width
+    """
     leftLineParams = linesParams["leftParams"]
     rightLineParams = linesParams["rightParams"]
     noneZeroIds = warpedFrame.nonzero()
@@ -272,17 +321,25 @@ def predictLaneLines(warpedFrame, linesParams, margin):
     leftLine, rightLine = fitLaneLines(
         (leftLineBoundryX, leftLineBoundryY), 
         (rightLineBoundryX, rightLineBoundryY), 
-        birdFrame.shape[0]-1
+        warpedFrame.shape[0]-1
     )
     return outImg, leftLine, rightLine
 
 
-def plotPredictionBoundry(warpedImg, leftLine, rightLine, margin):
+def plotPredictionBoundry(warpedImg, leftLinePoints, rightLinePoints, margin):
+    """
+    Plot the detected lane boundries over a given image
+    
+    @param warpedImg: (np.3darray) result of search plotted over
+    @param leftLinePoints: (tuple) lane lines points X, Y (np.ndarray)
+    @param rightLinePoints: (tuple) lane lines points X, Y (np.ndarray)
+    @param margin: (int) lane line detection boundry width
+    """
     boundryMask = np.zeros_like(warpedImg)
-    leftLineLeftMargin = leftLine[0] - margin, leftLine[1]
-    leftLineRightMargin = leftLine[0] + margin, leftLine[1]
-    rightLineLeftMargin = rightLine[0] - margin, rightLine[1]
-    rightLineRightMargin = rightLine[0] + margin, rightLine[1]
+    leftLineLeftMargin = leftLinePoints[0] - margin, leftLinePoints[1]
+    leftLineRightMargin = leftLinePoints[0] + margin, leftLinePoints[1]
+    rightLineLeftMargin = rightLinePoints[0] - margin, rightLinePoints[1]
+    rightLineRightMargin = rightLinePoints[0] + margin, rightLinePoints[1]
 
     leftLineLeftMargin = np.array(list(zip(*leftLineLeftMargin)), "int")
     leftLineRightMargin = np.flipud(np.array(list(zip(*leftLineRightMargin)), "int"))
@@ -341,7 +398,8 @@ def warped2BirdPoly(bgrFrame, points, width, height):
         points[2], points[-1]
     ])
     Matrix = cv2.getPerspectiveTransform(warpedPoints, birdPoints)
-    return cv2.warpPerspective(bgrFrame, Matrix, (width, height), flags=cv2.INTER_LINEAR)
+    warpedFrame = cv2.warpPerspective(bgrFrame, Matrix, (width, height), flags=cv2.INTER_LINEAR)
+    return warpedFrame, birdPoints
 
 
 def save2File(path, obj):
