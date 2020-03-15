@@ -351,7 +351,7 @@ def plotPredictionBoundry(warpedImg, leftLinePoints, rightLinePoints, margin):
     rightBoundry = list(np.vstack([rightLineLeftMargin, rightLineRightMargin]).reshape(1, -1, 2))
     cv2.fillPoly(boundryMask, rightBoundry, (255, 255, 0))
     outImg = cv2.addWeighted(warpedImg, 1, boundryMask, 0.2, 0)
-    return outImg
+    return outImg, boundryMask
 
 
 def predictXVal(y, params):
