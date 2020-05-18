@@ -4,7 +4,6 @@ import numpy as np
 from glob import glob
 
 
-
 def makeJPGS(path):
     """
     Converts images from png to jpg foramt of all images located in path directory
@@ -20,7 +19,8 @@ def makeJPGS(path):
             os.remove(imgPath)
             imgName = os.path.basename(imgPath)[0]
             cv2.imwrite(f"{outPath}/{imgName}.jpg", img)
-    else: print("jpgs already exists!")
+    else:
+        print("jpgs already exists!")
     return glob(outPath + "/*.jpg")
 
 
@@ -37,7 +37,7 @@ def getSceneCanny(imgArr):
     return edges
 
 
-def getRegOfInterest(imgArr):
+def getRegOfInterest(imgArr, regOfInterest):
     """
     Extract the lanes edges only from a scene of an extracted edges
 
@@ -45,7 +45,6 @@ def getRegOfInterest(imgArr):
     :returns lanes: numpy array image of the extracted lane edges only
     """
     height = imgArr.shape[0]
-    regOfInterest = np.array([[(30, height-75), (1250, height-75), (650, 290)]])
     mask = np.zeros_like(imgArr)
     cv2.fillPoly(mask, regOfInterest, (255, 255, 255))
     lanes = cv2.bitwise_and(imgArr, mask)
@@ -71,7 +70,7 @@ def getPointsFromLine(imgShape, m, b):
 
 
 def drawLanesLines(sceneImg, laneEdges, rho=2, theta=1,
-    minLineLength=50, maxLineGap=300, threshold=50):
+                   minLineLength=50, maxLineGap=300, threshold=50):
     """
     Draws straight lines over the scene source image using the lane extracted edges
 
@@ -87,7 +86,7 @@ def drawLanesLines(sceneImg, laneEdges, rho=2, theta=1,
     leftLines, rightLines = [], []
     imgShape = sceneImg.shape
     lines = cv2.HoughLinesP(
-        laneEdges, rho, theta*np.pi/180, threshold, lines = np.array([]),
+        laneEdges, rho, theta*np.pi/180, threshold, lines=np.array([]),
         minLineLength=minLineLength, maxLineGap=maxLineGap
     )
     lineMask = np.zeros_like(sceneImg)
